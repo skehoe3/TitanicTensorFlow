@@ -1,24 +1,18 @@
-from __future__ import absolute_import, division, print_function
+#import necessary libraries
 import tensorflow as tf
 from tensorflow import keras
-import numpy as np 
 import pandas as pd
-#import matplotlib.pyplot as plt
- 
-from tensorflow import feature_column
 from tensorflow.keras import layers
 from sklearn.preprocessing import LabelEncoder
 from keras.models import Sequential
 from keras.layers import Activation, Dense
 
-#print(tf.__version__)
 
-#load the data and take a peek
+#load the data
 train_disaster = pd.read_csv("titanicTrain.csv", sep = ",")
 pred_disaster = pd.read_csv("titanicTest.csv", sep = ",")
-#print(disaster.head())
 
-#subset for only the features that are likely to be significant
+#subset the original data for only the features that have meaning
 train_disaster = train_disaster[['Survived', 'Pclass','Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']].dropna()
 pred_disaster = pred_disaster[['Pclass','Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']].dropna()
 
@@ -44,26 +38,24 @@ preprocess_gender(pred_disaster)
 preprocess_embark(pred_disaster)
 
 
-print(train_disaster.head())
-#print(pred_disaster.head())
-#print(train_disaster.shape)
-
-
-#define the model
-
-
 # create model
 model = Sequential()
-model.add(Dense(12, input_dim=7, activation='relu'))
+#add a layer and specify the number of features; the dimension of the data frame minus the column to predict on.
+#relu is the activitation function; it is considered to be the best activation function the majority of the time.
+model.add(Dense(12, input_dim=7, activation='relu'))  
 model.add(Dense(8, activation='relu'))
+
 model.add(Dense(1, activation='sigmoid'))
-#figuring out which keras setup gives me a binary outcome
+#optimizer changes weights and biases during the training process.
+#we use binary crossentropy as our loss because this is a binary classification problem.
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-#train the model
+#Declare the features
 train_d_features = train_disaster[[ 'Pclass','Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
+#Declare the column to be predicted
 train_d_outcome = train_disaster[['Survived']]
-model.fit(train_d_features, train_d_outcome, epochs=5)
+#train the model
+model.fit(train_d_features, train_d_outcome, epochs=100, shuffle = True)
 
 #test the model
 pred_d_features = pred_disaster[[ 'Pclass','Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
