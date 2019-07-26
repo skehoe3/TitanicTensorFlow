@@ -55,7 +55,10 @@ train_d_features = train_disaster[[ 'Pclass','Sex', 'Age', 'SibSp', 'Parch', 'Fa
 #Declare the column to be predicted
 train_d_outcome = train_disaster[['Survived']]
 #train the model
-model.fit(train_d_features, train_d_outcome, epochs=100, shuffle = True)
+#epochs are the number of times the model will run
+#A neural network is iterative, so we need to run 
+#he model multiple times to get more accuracy
+model.fit(train_d_features, train_d_outcome, epochs=100, shuffle = True) 
 
 #test the model
 pred_d_features = pred_disaster[[ 'Pclass','Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
