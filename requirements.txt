@@ -1,0 +1,4 @@
+tensorflow
+pandas
+sklearn
+keras
