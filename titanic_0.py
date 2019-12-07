@@ -64,6 +64,7 @@ model.fit(train_d_features, train_d_outcome, epochs=100, shuffle = True)
 pred_d_features = pred_disaster[[ 'Pclass','Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
 preds = model.predict(pred_d_features)
 print(preds[0])
-
-
+print(train_d_features.shape)
+print(train_d_outcome.shape)
+print(train_d_outcome.head())
 
